@@ -25,21 +25,13 @@ int main(int argc, const char** argv)
 	ifstream myfile;
 	myfile.open("myprog.txt");
 
-	while (!myfile.eof()) {		// while it is not the end of file
-
-		myfile.get(tempchar);	// we get the char from file
-		if (tempchar != ' ') {	// if the char is not a space,
-			tempstring += tempchar;	// we insert it into the string
-		}
-
-		prog = tempstring;			// prog now contains tempstring
-
+	while (myfile >> tempchar) {		// while it is not the end of file
+			prog += tempchar;	// we insert it into the string
 	}
+
+	//cout << prog << endl;
 	myfile.close();				// we then close the file
 
-
-	//cout << ">";				// original code
-	//cin >> prog;				// user inserts prog
 
 	cout << "\nresult= " << exp() << endl;
 
@@ -58,7 +50,7 @@ int exp()		// exp: tail-end recursion to call our non-terminals
 int term()	// term: using tail-end recursion to call non-terminals
 {
 	cout << "term\n";
-	return term2(myNum()); // myNum changed from fact()
+	return term2(fact()); // myNum changed from fact()
 }
 
 int fact()
@@ -69,12 +61,12 @@ int fact()
 		char a = prog.at(indexx++);
 		if (a == '(')
 		{
-			cout << "paren\n";
-			while(a != ')') {
-				exp();
-			};
+			exp();
 		}
-
+		else 
+		{
+			indexx--;
+		}
 	}
 
 	return fact2(myNum());
@@ -96,10 +88,11 @@ int exp2(int inp)		// implements right-recursive form to get our 'inp' by
 	if (indexx < prog.length()) //if not the end of program string
 	{
 		char a = prog.at(indexx++); //get one chr from program string
-		if (a == '+')
-			result = exp2(result + term()); //handles t+t
-		else if (a == '-')
-			result = exp2(result - term()); //handles t-t
+
+			if (a == '+')
+				result = exp2(result + term()); //handles t+t
+			else if (a == '-')
+				result = exp2(result - term()); //handles t-t
 	}
 	return result;
 }
@@ -144,11 +137,13 @@ int fact2(int inp)
 	{
 		char a = prog.at(indexx++); //get one chr from program string
 		if (a == '^')
-			{
-				cout << "test2\n";
-				result = fact2(pow(myNum(), fact()));
-			}
-
+		{
+			cout << "test2\n";
+			result = fact2(pow(result, fact()));
+		}
+		else if (a == '*' || a == '/') {
+			indexx--;
+		}
 	}
 	//return atoi(&a); //converts a char to a numeric number and return
 
