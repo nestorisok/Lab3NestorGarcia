@@ -141,7 +141,7 @@ int fact2(int inp)
 			cout << "test2\n";
 			result = fact2(pow(result, fact()));
 		}
-		else if (a == '*' || a == '/') {
+		else if (a == '*' || a == '/' || a == '+' || a == '-') {
 			indexx--;
 		}
 	}
