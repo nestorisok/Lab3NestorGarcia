@@ -26,7 +26,7 @@ int main(int argc, const char** argv)
 	myfile.open("myprog.txt");
 
 	while (myfile >> tempchar) {		// while it is not the end of file
-			prog += tempchar;	// we insert it into the string
+		prog += tempchar;	// we insert it into the string
 	}
 
 	//cout << prog << endl;
@@ -56,17 +56,18 @@ int term()	// term: using tail-end recursion to call non-terminals
 int fact()
 {
 	cout << "fact\n";
-	
+
 
 	if (indexx < prog.length())
 	{
-	
+
 		int result;
 		char a = prog.at(indexx++); //get one chr from program string
 		if (a == '(')
 		{
 			//indexx++;
 			result = exp();
+			if (a == ')')
 			indexx++;
 			//return result;
 		}
@@ -77,7 +78,7 @@ int fact()
 			//return result;
 
 		}
-		
+
 		return result;
 
 	}
@@ -100,14 +101,12 @@ int exp2(int inp)		// implements right-recursive form to get our 'inp' by
 	{
 		char a = prog.at(indexx++); //get one chr from program string
 
-		if (a != ')')
-		{
 			if (a == '+')
 				result = exp2(result + term()); //handles t+t
 			else if (a == '-')
 				result = exp2(result - term()); //handles t-t
-		}
 		
+
 	}
 	return result;
 }
@@ -172,9 +171,9 @@ int myChar()
 
 	cout << "myNum\n";
 
-		char a = prog.at(indexx++); //get one chr from program string
+	char a = prog.at(indexx++); //get one chr from program string
 
-		return atoi(&a); //converts a char to a numeric number and return
+	return atoi(&a); //converts a char to a numeric number and return
 
 
 }
