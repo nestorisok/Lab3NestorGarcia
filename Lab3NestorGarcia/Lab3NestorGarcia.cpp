@@ -33,11 +33,11 @@ int main(int argc, const char** argv)
 	myfile.close();				// we then close the file
 
 
-	cout << "\nresult= " << exp() << endl;
+ 	cout << "\nresult= " << exp() << endl;
 
 
 
-}
+   }
 
 // exp() returns value from exp2(term())
 int exp()		// exp: tail-end recursion to call our non-terminals
@@ -58,30 +58,28 @@ int fact()
 	cout << "fact\n";
 
 
-	if (indexx < prog.length())
-	{
+		
+		char a = prog.at(indexx++);
 
-		int result;
-		char a = prog.at(indexx++); //get one chr from program string
 		if (a == '(')
 		{
+			
+			int result = exp();
 			//indexx++;
-			result = exp();
-			if (a == ')')
-			indexx++;
-			//return result;
-		}
-
-		else// if (a == ')')
-		{
-			result = fact2(atoi(&a));
-			//return result;
+			return result;
+	
 
 		}
+		/*if (a == ')')
+			indexx++; */
+		//return result;
 
-		return result;
 
-	}
+
+		return fact2(atoi(&a));
+	
+
+
 }
 
 
@@ -101,11 +99,11 @@ int exp2(int inp)		// implements right-recursive form to get our 'inp' by
 	{
 		char a = prog.at(indexx++); //get one chr from program string
 
-			if (a == '+')
-				result = exp2(result + term()); //handles t+t
-			else if (a == '-')
-				result = exp2(result - term()); //handles t-t
-		
+		if (a == '+')
+			result = exp2(result + term()); //handles t+t
+		else if (a == '-')
+			result = exp2(result - term()); //handles t-t
+
 
 	}
 	return result;
@@ -155,9 +153,11 @@ int fact2(int inp)
 			cout << "test2\n";
 			result = fact2(pow(result, fact()));
 		}
-		else if (a == '*' || a == '/' || a == '+' || a == '-') {
+		else if (a == '*' || a == '/' || a == '+' || a == '-') 
+		{
 			indexx--;
 		}
+		
 	}
 	//return atoi(&a); //converts a char to a numeric number and return
 
