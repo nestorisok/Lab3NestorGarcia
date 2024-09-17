@@ -26,14 +26,13 @@ int main(int argc, const char** argv)
 	myfile.open("myprog.txt");
 
 	while (myfile >> tempchar) {		// while it is not the end of file
-		prog += tempchar;	// we insert it into the string
+		prog += tempchar;				// we insert char into string
 	}
 
-	//cout << prog << endl;
-	myfile.close();				// we then close the file
+	myfile.close();					// we then close the file
 
-
- 	cout << "\nresult= " << exp() << endl;
+	cout << "\nEquation = " << prog << endl;
+ 	cout << "\nResult = " << exp() << endl;
 
 
 
@@ -43,43 +42,34 @@ int main(int argc, const char** argv)
 int exp()		// exp: tail-end recursion to call our non-terminals
 {
 
-
-	cout << "exp\n";
 	return exp2(term());	// if exp is called, we goto exp2 with our term
 }
 
 // term() returns value from term2(fact())
 int term() 	// term: using tail-end recursion to call non-terminals
 {
-	cout << "term\n";
-	return term2(fact2(fact())); // myNum changed from fact()
+
+	return term2(fact2(fact())); // term calls fact() -> fact2() -> term2()
 }
 
+
+// fact() checks to see if there is a left parantheses first
 int fact()
 {
-	cout << "fact\n";
 
-
-		
-		//char a = prog.at(indexx);
-		
-	
-		if (prog.at(indexx) == '(')
+		if (prog.at(indexx) == '(')			// if left parantheses at indexx
 		{
-				indexx++;
-				int result = exp();
-				if (prog.at(indexx) == ')')
+				indexx++;					// we incremenet to get next char
+				int result = exp();			// keep result of exp() in result
+				if (prog.at(indexx) == ')')	// checks to see if the indexx is sitting at right parantheses
 				{
-					indexx++;
+					indexx++;				// if so, we increment to next char
 				}
-				return result;
+				return result;				// we return result to fact2() which is nested in term2()
 
 		}
 		
-			return fact2(atoi(&prog.at(indexx++)));
-		
-		
-		
+			return fact2(atoi(&prog.at(indexx++)));		// we check the next char for its value (PEMDAS)
 
 }
 
@@ -103,7 +93,7 @@ int exp2(int inp)		// implements right-recursive form to get our 'inp' by
 		else if (a == '-')
 			result = exp2(result - term()); //handles t-t
 		else
-			indexx--;
+			indexx--;		// if none of these, we go back one step
 
 	}
 	return result;
@@ -135,18 +125,18 @@ int term2(int inp)
 	return result;
 }
 
-// fact() has variable char 'a' which is the char character at the current index
-// returning the ascii to integer value from char 'a'
-// 
+// fact2() does our power, if our current character is a '^', we make our result
+// be the base to our next character, and so forth, nested so it can recursively check
+// for the upcoming characters
 int fact2(int inp)
 {
 	int result = inp;
 	if (indexx < prog.length())
 	{
-		char a = prog.at(indexx++);  // Get one character from the program string
+		char a = prog.at(indexx++);  
 		if (a == '^')
 		{
-			result = fact2(pow(result, fact()));  // Correctly handle right-associative exponentiation
+			result = fact2(pow(result, fact()));  // Correctly handle right-associative
 		}
 		else
 			indexx--;  // Step back if not '^'
@@ -155,15 +145,15 @@ int fact2(int inp)
 	return result;
 }
 
-
-int myChar()
-{
-
-	cout << "myNum\n";
-
-	char a = prog.at(indexx++); //get one chr from program string
-
-	return atoi(&a); //converts a char to a numeric number and return
-
-
-}
+//
+//int myChar()
+//{
+//
+//	cout << "myNum\n";
+//
+//	char a = prog.at(indexx++); //get one chr from program string
+//
+//	return atoi(&a); //converts a char to a numeric number and return
+//
+//
+//}
