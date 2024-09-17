@@ -23,7 +23,7 @@ int main(int argc, const char** argv)
 	char tempchar;
 
 	ifstream myfile;
-	myfile.open("myprog.txt");
+	myfile.open("myProg.txt");
 
 	while (myfile >> tempchar) {		// while it is not the end of file
 		prog += tempchar;				// we insert char into string
