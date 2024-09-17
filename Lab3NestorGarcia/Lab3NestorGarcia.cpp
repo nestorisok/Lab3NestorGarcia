@@ -1,4 +1,4 @@
-//// interpreter for simplified infix expression with {+, -, *, / } operations;
+﻿//// interpreter for simplified infix expression with {+, -, *, / } operations;
 //// keyboard input, single digit numbers only and no spaces are allowed;
 //// compile: $> g++ prog1.cpp
 //// run with: 2+3*4/2+3+4*2
@@ -42,15 +42,17 @@ int main(int argc, const char** argv)
 // exp() returns value from exp2(term())
 int exp()		// exp: tail-end recursion to call our non-terminals
 {
+
+
 	cout << "exp\n";
 	return exp2(term());	// if exp is called, we goto exp2 with our term
 }
 
 // term() returns value from term2(fact())
-int term()	// term: using tail-end recursion to call non-terminals
+int term() 	// term: using tail-end recursion to call non-terminals
 {
 	cout << "term\n";
-	return term2(fact()); // myNum changed from fact()
+	return term2(fact2(fact())); // myNum changed from fact()
 }
 
 int fact()
@@ -59,26 +61,25 @@ int fact()
 
 
 		
-		char a = prog.at(indexx++);
-
-		if (a == '(')
-		{
-			
-			int result = exp();
-			//indexx++;
-			return result;
+		//char a = prog.at(indexx);
+		
 	
+		if (prog.at(indexx) == '(')
+		{
+				indexx++;
+				int result = exp();
+				if (prog.at(indexx) == ')')
+				{
+					indexx++;
+				}
+				return result;
 
 		}
-		/*if (a == ')')
-			indexx++; */
-		//return result;
-
-
-
-		return fact2(atoi(&a));
-	
-
+		
+			return fact2(atoi(&prog.at(indexx++)));
+		
+		
+		
 
 }
 
@@ -92,18 +93,17 @@ int fact()
 
 int exp2(int inp)		// implements right-recursive form to get our 'inp' by
 {						// calling exp2 either adding or subtracting our result and our 'term'
-	cout << "exp2\n";
 
 	int result = inp;
 	if (indexx < prog.length()) //if not the end of program string
 	{
 		char a = prog.at(indexx++); //get one chr from program string
-
 		if (a == '+')
 			result = exp2(result + term()); //handles t+t
 		else if (a == '-')
 			result = exp2(result - term()); //handles t-t
-
+		else
+			indexx--;
 
 	}
 	return result;
@@ -120,7 +120,6 @@ int exp2(int inp)		// implements right-recursive form to get our 'inp' by
 
 int term2(int inp)
 {
-	cout << "term2\n";
 
 	int result = inp;
 	if (indexx < prog.length()) //if not the end of program string
@@ -130,7 +129,7 @@ int term2(int inp)
 			result = term2(result * fact()); //handles consecutive * operators
 		else if (a == '/')
 			result = term2(result / fact()); //handles consecutive / operators
-		else if (a == '+' || a == '-') //if + or -, get back one position
+		else //if + or -, get back one position
 			indexx--;
 	}
 	return result;
@@ -141,27 +140,18 @@ int term2(int inp)
 // 
 int fact2(int inp)
 {
-	cout << "fact2\n";
-
-
 	int result = inp;
 	if (indexx < prog.length())
 	{
-		char a = prog.at(indexx++); //get one chr from program string
+		char a = prog.at(indexx++);  // Get one character from the program string
 		if (a == '^')
 		{
-			cout << "test2\n";
-			result = fact2(pow(result, fact()));
+			result = fact2(pow(result, fact()));  // Correctly handle right-associative exponentiation
 		}
-		else if (a == '*' || a == '/' || a == '+' || a == '-') 
-		{
-			indexx--;
-		}
-		
+		else
+			indexx--;  // Step back if not '^'
+
 	}
-	//return atoi(&a); //converts a char to a numeric number and return
-
-
 	return result;
 }
 
